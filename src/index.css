@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-wood-50 text-wood-900 min-h-screen;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer border-0 no-underline whitespace-nowrap;
+  }
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-wood-500 text-wood-50 shadow-wood-sm hover:bg-wood-600 hover:-translate-y-px hover:shadow-wood-md;
+  }
+  .btn-secondary {
+    @apply bg-white text-wood-600 border border-wood-300 hover:bg-wood-100 hover:border-wood-500;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-wood-600 hover:bg-wood-100 hover:text-wood-700;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+  .btn-sm  { @apply px-3 py-1.5 text-xs; }
+  .btn-lg  { @apply px-7 py-3.5 text-base; }
+
+  /* Cards */
+  .card {
+    @apply bg-white border border-wood-200 rounded-xl shadow-wood-sm overflow-hidden;
+  }
+  .card-body   { @apply p-6; }
+  .card-header { @apply px-6 py-4 border-b border-wood-200 bg-wood-100; }
+
+  /* Form elements */
+  .form-label {
+    @apply block text-sm font-medium text-wood-800 mb-1.5;
+  }
+  .form-input, .form-select, .form-textarea {
+    @apply w-full px-4 py-2.5 text-sm text-wood-900 bg-white border border-wood-200 rounded-lg outline-none transition-all duration-150;
+    @apply focus:border-wood-500 focus:ring-2 focus:ring-wood-500/20;
+  }
+  .form-input::placeholder { @apply text-wood-300; }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full;
+  }
+  .badge-wood    { @apply bg-wood-100 text-wood-700; }
+  .badge-success { @apply bg-green-100 text-green-700; }
+  .badge-error   { @apply bg-red-100 text-red-700; }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .animate-fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,85 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { DesignProvider } from './context/DesignContext'
+import ProtectedRoute from './components/layout/ProtectedRoute'
+
+// Pages
+import LandingPage from './pages/LandingPage'
+//import LoginPage from './pages/LoginPage'
+//import RegisterPage from './pages/RegisterPage'
+
+// Admin pages
+//import AdminDashboard from './pages/admin/AdminDashboard'
+//import RoomSetup from './pages/admin/RoomSetup'
+//import DesignEditor from './pages/admin/DesignEditor'
+//import View3D from './pages/admin/View3D'
+//import DesignDetail from './pages/admin/DesignDetail'
+
+// User pages
+//import UserDashboard from './pages/user/UserDashboard'
+//import UserRoomSetup from './pages/user/UserRoomSetup'
+//import UserView3D from './pages/user/UserView3D'
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <DesignProvider>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
+            {/* <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} /> */}
+
+            {/* Admin (Designer) routes - protected */}
+            <Route path="/admin" element={
+              {/*<ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute> */}
+            } />
+            <Route path="/admin/room-setup" element={
+              {/*<ProtectedRoute role="admin">
+                <RoomSetup />
+              </ProtectedRoute>*/}
+            } />
+            <Route path="/admin/editor/:id" element={
+              {/*<ProtectedRoute role="admin">
+                <DesignEditor />
+              </ProtectedRoute>*/}
+            } />
+            <Route path="/admin/view3d/:id" element={
+              {/*<ProtectedRoute role="admin">
+                <View3D />
+              </ProtectedRoute>*/}
+            } />
+            <Route path="/admin/design/:id" element={
+              {/*<ProtectedRoute role="admin">
+                <DesignDetail />
+              </ProtectedRoute>*/}
+            } />
+
+            {/* User (Customer) routes - protected */}
+            <Route path="/user" element={
+              {/*<ProtectedRoute role="user">
+                <UserDashboard />
+              </ProtectedRoute>*/}
+            } />
+            <Route path="/user/room-setup" element={
+              {/*<ProtectedRoute role="user">
+                <UserRoomSetup />
+              </ProtectedRoute>*/}
+            } />
+            <Route path="/user/view3d/:id" element={
+              {/*<ProtectedRoute role="user">
+                <UserView3D />
+              </ProtectedRoute>*/}
+            } />
+
+            {/* Catch-all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </DesignProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  )
+}
