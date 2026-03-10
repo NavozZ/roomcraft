@@ -5,18 +5,18 @@ import ProtectedRoute from './components/layout/ProtectedRoute'
 
 // Pages
 import LandingPage from './pages/LandingPage'
-//import LoginPage from './pages/LoginPage'
-//import RegisterPage from './pages/RegisterPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 // Admin pages
-//import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminDashboard from './pages/admin/AdminDashboard'
 //import RoomSetup from './pages/admin/RoomSetup'
 //import DesignEditor from './pages/admin/DesignEditor'
 //import View3D from './pages/admin/View3D'
 //import DesignDetail from './pages/admin/DesignDetail'
 
 // User pages
-//import UserDashboard from './pages/user/UserDashboard'
+import UserDashboard from './pages/user/UserDashboard'
 //import UserRoomSetup from './pages/user/UserRoomSetup'
 //import UserView3D from './pages/user/UserView3D'
 
@@ -28,14 +28,14 @@ export default function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
-            {/* <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} /> */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} /> 
 
             {/* Admin (Designer) routes - protected */}
             <Route path="/admin" element={
-              {/*<ProtectedRoute role="admin">
+              <ProtectedRoute role="admin">
                 <AdminDashboard />
-              </ProtectedRoute> */}
+              </ProtectedRoute> 
             } />
             <Route path="/admin/room-setup" element={
               {/*<ProtectedRoute role="admin">
@@ -60,9 +60,9 @@ export default function App() {
 
             {/* User (Customer) routes - protected */}
             <Route path="/user" element={
-              {/*<ProtectedRoute role="user">
+              <ProtectedRoute role="user">
                 <UserDashboard />
-              </ProtectedRoute>*/}
+              </ProtectedRoute>
             } />
             <Route path="/user/room-setup" element={
               {/*<ProtectedRoute role="user">
