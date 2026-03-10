@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../../components/layout/Navbar'
 import { useAuth } from '../../hooks/useAuth'
+import { designService } from '../../services/designService'
+import { useEffect, useState } from 'react'
 
-// Author: Asantha
+
 
 export default function AdminDashboard() {
   const { user } = useAuth()
 
-  // Placeholder — Asantha will replace with real data from designService
-  const designs = []
+  
+  const [designs, setDesigns] = useState([])
+useEffect(() => {
+  setDesigns(designService.getByUser(user.id))
+}, [user.id])
 
   return (
     <div className="min-h-screen bg-wood-50">
