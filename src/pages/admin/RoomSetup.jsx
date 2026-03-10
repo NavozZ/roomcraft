@@ -5,7 +5,10 @@ import { useAuth } from '../../hooks/useAuth'
 import { useDesign } from '../../hooks/useDesign'
 import { designService } from '../../services/designService'
 
+// Author: Waruni
+// NOTE: If you see "Objects are not valid as React child" — clear localStorage in DevTools > Application > Storage > Clear Site Data, then refresh.
 
+// ── Constants ─────────────────────────────────────────────────
 const SHAPES = [
   { id: 'rectangle', label: 'Rectangle', icon: '▭', desc: 'Standard rectangular room' },
   { id: 'l-shape',   label: 'L-Shape',   icon: '⌐', desc: 'L-shaped open plan' },
@@ -31,11 +34,11 @@ const FLOOR_TYPES = [
   { label: 'Tile',       value: '#D0D8E0', pattern: 'tile' },
 ]
 
-// Preview Component
+// ── Preview Component ──────────────────────────────────────────
 function RoomPreview({ room }) {
   const { widthM = 5, heightM = 4, shape, wallColour, floorColour } = room
 
-  
+  // Scale to fit preview box (max 260px wide, 200px tall)
   const maxW = 240, maxH = 180
   const scale = Math.min(maxW / widthM, maxH / heightM)
   const pw = widthM  * scale
@@ -49,7 +52,7 @@ function RoomPreview({ room }) {
         style={{ width: maxW + 32, height: maxH + 32, background: '#f0ede8', borderRadius: 8, border: '2px solid #e8ddd0' }}>
 
         {shape === 'l-shape' ? (
-          
+          // L-shape: two rects
           <div style={{ position: 'relative', width: pw, height: ph }}>
             <div style={{
               position: 'absolute', top: 0, left: 0,
@@ -72,7 +75,7 @@ function RoomPreview({ room }) {
             borderRadius: 2,
             position: 'relative',
           }}>
-            
+            {/* Dimension labels */}
             <span style={{
               position: 'absolute', bottom: -22, left: '50%', transform: 'translateX(-50%)',
               fontSize: 10, color: '#888', fontFamily: 'monospace', whiteSpace: 'nowrap',
@@ -85,7 +88,7 @@ function RoomPreview({ room }) {
         )}
       </div>
 
-      
+      {/* Area */}
       <div className="text-xs text-wood-400">
         Floor area: <span className="font-semibold text-wood-600">{(widthM * heightM).toFixed(1)} m²</span>
       </div>
@@ -93,13 +96,13 @@ function RoomPreview({ room }) {
   )
 }
 
-//Main Component
+// ── Main Component ─────────────────────────────────────────────
 export default function RoomSetup() {
   const { user }          = useAuth()
   const { createDesign }  = useDesign()
   const navigate          = useNavigate()
 
-  const [step, setStep]   = useState(1) 
+  const [step, setStep]   = useState(1) // 1 = basics, 2 = colours
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -117,7 +120,7 @@ export default function RoomSetup() {
     setErrors(prev => ({ ...prev, [key]: '' }))
   }
 
-  
+  // ── Validate step 1 ────────────────────────────────────────
   const validateStep1 = () => {
     const e = {}
     if (!room.name.trim())        e.name    = 'Please give your room a name.'
@@ -131,21 +134,21 @@ export default function RoomSetup() {
     if (validateStep1()) setStep(2)
   }
 
-  
+  // ── Submit ─────────────────────────────────────────────────
   const handleSubmit = async () => {
     setLoading(true)
     await new Promise(r => setTimeout(r, 300))
 
     const design = createDesign(room)
 
-    
+    // Also persist to localStorage via designService
     designService.create({
       ...design,
       userId: user.id,
     })
 
     setLoading(false)
-    
+    // Navigate to the 2D editor with this design's id
     navigate(`/admin/editor/${design.id}`)
   }
 
@@ -183,18 +186,18 @@ export default function RoomSetup() {
             ))}
           </div>
 
-          
+          {/* Main grid */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-            
+            {/* Form — 3 cols */}
             <div className="lg:col-span-3">
 
-              
+              {/* ── STEP 1: Room basics ── */}
               {step === 1 && (
                 <div className="card p-8 flex flex-col gap-6 animate-fade-in-up">
                   <h2 className="font-display text-2xl text-wood-800">Room Details</h2>
 
-                  
+                  {/* Room name */}
                   <div className="flex flex-col gap-1.5">
                     <label className="form-label" htmlFor="roomName">Room Name</label>
                     <input
@@ -209,7 +212,7 @@ export default function RoomSetup() {
                     {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                   </div>
 
-                  
+                  {/* Dimensions */}
                   <div>
                     <label className="form-label">Room Dimensions (metres)</label>
                     <p className="text-xs text-wood-400 mb-3">Enter the real dimensions of the room in metres.</p>
@@ -245,7 +248,7 @@ export default function RoomSetup() {
                     </div>
                   </div>
 
-                  
+                  {/* Shape */}
                   <div>
                     <label className="form-label">Room Shape</label>
                     <div className="grid grid-cols-3 gap-3 mt-2">
@@ -273,7 +276,7 @@ export default function RoomSetup() {
                 </div>
               )}
 
-              
+              {/* ── STEP 2: Colours ── */}
               {step === 2 && (
                 <div className="card p-8 flex flex-col gap-6 animate-fade-in-up">
                   <div className="flex items-center gap-3">
@@ -284,7 +287,7 @@ export default function RoomSetup() {
                     <h2 className="font-display text-2xl text-wood-800">Colours & Finish</h2>
                   </div>
 
-                  
+                  {/* Wall colour */}
                   <div>
                     <label className="form-label">Wall Colour</label>
                     <div className="flex flex-wrap gap-3 mt-2">
@@ -307,7 +310,7 @@ export default function RoomSetup() {
                     </p>
                   </div>
 
-                  
+                  {/* Floor type */}
                   <div>
                     <label className="form-label">Floor Type</label>
                     <div className="grid grid-cols-5 gap-2 mt-2">
@@ -328,7 +331,7 @@ export default function RoomSetup() {
                     </div>
                   </div>
 
-                  
+                  {/* Summary */}
                   <div className="bg-wood-50 border border-wood-200 rounded-xl p-4">
                     <p className="text-xs text-wood-500 font-medium uppercase tracking-wider mb-2">Summary</p>
                     <div className="grid grid-cols-2 gap-y-1 text-sm">
@@ -358,12 +361,12 @@ export default function RoomSetup() {
               )}
             </div>
 
-            
+            {/* Preview — 2 cols */}
             <div className="lg:col-span-2">
               <div className="card p-8 sticky top-24">
                 <RoomPreview room={room} />
 
-                
+                {/* Room info chips */}
                 <div className="mt-6 flex flex-wrap gap-2">
                   <span className="badge badge-wood">{room.widthM}m × {room.heightM}m</span>
                   <span className="badge badge-wood capitalize">{room.shape}</span>

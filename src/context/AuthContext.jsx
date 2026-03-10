@@ -19,7 +19,7 @@ const loadUsers = () => {
   try {
     const stored = localStorage.getItem(USERS_KEY)
     return stored ? JSON.parse(stored) : []
-  } catch { return [] }
+  } catch (_e) { return [] }
 }
 
 const saveUsers = (users) => {
@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
     try {
       const saved = localStorage.getItem(SESSION_KEY)
       if (saved) setUser(JSON.parse(saved))
-    } catch {
+    } catch (_e) {
       localStorage.removeItem(SESSION_KEY)
     } finally {
       setLoading(false)

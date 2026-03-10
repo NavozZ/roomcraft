@@ -269,14 +269,10 @@ export default function DesignEditor() {
                       {/* Selection handles */}
                       {isSelected && (
                         <>
-                          {[['top-0 left-0 -translate-x-1/2 -translate-y-1/2'],
-                            ['top-0 right-0 translate-x-1/2 -translate-y-1/2'],
-                            ['bottom-0 left-0 -translate-x-1/2 translate-y-1/2'],
-                            ['bottom-0 right-0 translate-x-1/2 translate-y-1/2']
-                          ].map(([cls], i) => (
-                            <div key={i}
-                              className={`absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm ${cls}`} />
-                          ))}
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm top-0 right-0 translate-x-1/2 -translate-y-1/2" />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
                         </>
                       )}
                     </div>

@@ -7,7 +7,7 @@ const load = () => {
   try {
     const raw = localStorage.getItem(DESIGNS_KEY)
     return raw ? JSON.parse(raw) : []
-  } catch { return [] }
+  } catch (_e) { return [] }
 }
 
 const persist = (designs) => {
