@@ -24,7 +24,7 @@ const pxToM = (px) => px / PIXELS_PER_METRE
 export default function DesignEditor() {
   const { id }           = useParams()
   const navigate         = useNavigate()
-  const { currentDesign, loadDesign, addFurniture, updateFurniture, removeFurniture } = useDesign()
+  const { currentDesign, loadDesign, addFurniture, updateFurniture, removeFurniture, updateRoom } = useDesign()
 
   const canvasRef   = useRef(null)
   const [selected, setSelected]     = useState(null)     // selected furniture id
@@ -266,13 +266,12 @@ export default function DesignEditor() {
                         }}>{item.label}</span>
                       )}
 
-                      {/* Selection handles */}
                       {isSelected && (
                         <>
-                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
-                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm top-0 right-0 translate-x-1/2 -translate-y-1/2" />
-                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
-                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm" style={{top:0,left:0,transform:'translate(-50%,-50%)'}} />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm" style={{top:0,right:0,transform:'translate(50%,-50%)'}} />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm" style={{bottom:0,left:0,transform:'translate(-50%,50%)'}} />
+                          <div className="absolute w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-sm" style={{bottom:0,right:0,transform:'translate(50%,50%)'}} />
                         </>
                       )}
                     </div>
@@ -386,10 +385,7 @@ export default function DesignEditor() {
             <input
               type="color"
               value={room.wallColour || '#FAF7F2'}
-              onChange={e => {
-                // TODO: Ravindu — hook this into updateRoom from useDesign
-                console.log('Wall colour:', e.target.value)
-              }}
+              onChange={e => updateRoom({ wallColour: e.target.value })}
               className="w-full h-8 rounded cursor-pointer border border-wood-600 bg-transparent"
             />
           </div>
