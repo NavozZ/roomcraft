@@ -99,8 +99,8 @@ export default function UserView3D() {
           <span className="text-xs text-wood-400">🖱️ Drag to rotate · Scroll to zoom · Right-drag to pan</span>
         </div>
 
-        <div className="flex-1">
-          <Canvas shadows gl={{ antialias: true }} style={{ background: '#1C1006' }}>
+        <div className="flex-1" style={{ position: 'relative', width: '100%', minHeight: 0 }}>
+          <Canvas shadows gl={{ antialias: true }} style={{ position: 'absolute', inset: 0, background: '#1C1006' }}>
             <PerspectiveCamera makeDefault
               position={[room.widthM/2, dist*0.7, room.heightM+dist*0.6]}
               fov={50} />
