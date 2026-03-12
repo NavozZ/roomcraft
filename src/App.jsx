@@ -9,17 +9,15 @@ import RegisterPage   from './pages/RegisterPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import RoomSetup      from './pages/admin/RoomSetup'
 import DesignEditor   from './pages/admin/DesignEditor'
+import View           from './pages/admin/View3D' 
+import DesignDetail   from './pages/admin/DesignDetail'
 import UserDashboard  from './pages/user/UserDashboard'
+import UserView3D     from './pages/user/UserView3D'
+import UserRoomSetup  from './pages/user/UserRoomSetup'
 
-function ComingSoon({ label }) {
-  return (
-    <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:12, background:'#FAF7F2' }}>
-      <div style={{ fontSize:48 }}>🚧</div>
-      <h2 style={{ fontFamily:'serif', fontSize:28, color:'#4A2F12' }}>{label}</h2>
-      <p style={{ color:'#A67C52', fontSize:14 }}>This page is being built.</p>
-    </div>
-  )
-}
+
+
+
 
 export default function App() {
   return (
@@ -41,20 +39,20 @@ export default function App() {
               <ProtectedRoute role="admin"><DesignEditor /></ProtectedRoute>
             } />
             <Route path="/admin/view3d/:id" element={
-              <ProtectedRoute role="admin"><ComingSoon label="3D View — Mayumi is building this" /></ProtectedRoute>
+              <ProtectedRoute role="admin"><View /></ProtectedRoute>
             } />
             <Route path="/admin/design/:id" element={
-              <ProtectedRoute role="admin"><ComingSoon label="Design Detail" /></ProtectedRoute>
+              <ProtectedRoute role="admin"><DesignDetail/></ProtectedRoute>
             } />
 
             <Route path="/user" element={
               <ProtectedRoute role="user"><UserDashboard /></ProtectedRoute>
             } />
             <Route path="/user/room-setup" element={
-              <ProtectedRoute role="user"><RoomSetup /></ProtectedRoute>
+              <ProtectedRoute role="user"><UserRoomSetup/></ProtectedRoute>
             } />
             <Route path="/user/view3d/:id" element={
-              <ProtectedRoute role="user"><ComingSoon label="3D View — Mayumi is building this" /></ProtectedRoute>
+              <ProtectedRoute role="user"><UserView3D /></ProtectedRoute>
             } />
 
             <Route path="*" element={<Navigate to="/" replace />} />
