@@ -81,7 +81,7 @@ export default function UserRoomSetup() {
     const design = createDesign(room)
     designService.create({ ...design, userId: user.id })
     setLoading(false)
-    navigate(`/user/view3d/${design.id}`)
+    navigate(`/user/editor/${design.id}`)
   }
 
   const inputStyle = (err) => ({
@@ -227,7 +227,7 @@ export default function UserRoomSetup() {
                           <span style={{ width:14, height:14, border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid #FFF', borderRadius:'50%', animation:'rc-spin 0.7s linear infinite', display:'inline-block' }} />
                           Setting up room...
                         </span>
-                      : '🏠 View My Room in 3D →'
+                      : '🎨 Start Designing My Room →'
                     }
                   </button>
                 </div>
