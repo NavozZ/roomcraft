@@ -1,14 +1,9 @@
-// FurnitureModel.jsx — Mayumi
-// Loads a real GLB model if available, falls back to styled box geometry.
-// Place .glb files in: public/models/<type>.glb
-// e.g. public/models/sofa.glb, public/models/chair.glb
-
 import { useRef, useState, useEffect, Suspense, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, Text } from '@react-three/drei'
 import * as THREE from 'three'
 
-// ── Model heights per type (fallback box heights) ──────────────
+// Model heights per type
 const BOX_HEIGHTS = {
   'bed':          0.55,
   'sofa':         0.80,
@@ -22,36 +17,36 @@ const BOX_HEIGHTS = {
   'desk':         0.75,
 }
 
-// ── GLB model loader (used when file exists) ───────────────────
+//  GLB model loader
 function GLBModel({ url, item, hovered }) {
   const { scene } = useGLTF(url)
 
-  // Clone the scene so multiple instances don't share the same object
+  
   const cloned = useMemo(() => {
     const clone = scene.clone(true)
 
-    // Compute bounding box of the cloned scene
+    
     const box  = new THREE.Box3().setFromObject(clone)
     const size = new THREE.Vector3()
     box.getSize(size)
 
-    // Uniform scale — fit to the furniture's real-world footprint
+    
     if (size.x > 0 && size.z > 0) {
       const scale = Math.min(item.widthM / size.x, item.depthM / size.z)
       clone.scale.set(scale, scale, scale)
     }
 
-    // Re-compute box after scaling and sit the model on y=0
+    
     const scaledBox = new THREE.Box3().setFromObject(clone)
     clone.position.y = -scaledBox.min.y
 
-    // Centre on XZ plane
+    
     const centre = new THREE.Vector3()
     scaledBox.getCenter(centre)
     clone.position.x = -centre.x
     clone.position.z = -centre.z
 
-    // Apply colour tint and shadows to every mesh in the model
+    
     const colour = new THREE.Color(item.colour || '#C8A882')
     colour.multiplyScalar(1 - (item.shading || 0) * 0.4)
     clone.traverse(child => {
@@ -71,7 +66,7 @@ function GLBModel({ url, item, hovered }) {
   return <primitive object={cloned} />
 }
 
-// ── Fallback styled box (when no GLB available) ────────────────
+// Fallback styled box
 function FallbackBox({ item, hovered }) {
   const meshRef = useRef()
   const boxH = BOX_HEIGHTS[item.type] || 0.75
@@ -88,7 +83,7 @@ function FallbackBox({ item, hovered }) {
   c.multiplyScalar(1 - (item.shading || 0) * 0.4)
 
   return (
-    // Offset by half height so box bottom sits on y=0
+    
     <mesh
       ref={meshRef}
       castShadow
@@ -107,12 +102,12 @@ function FallbackBox({ item, hovered }) {
   )
 }
 
-// ── GLB loader with error boundary ────────────────────────────
+// GLB loader with error boundary 
 function GLBWithFallback({ item, hovered }) {
   const [hasModel, setHasModel] = useState(true)
   const modelPath = `/models/${item.type}.glb`
 
-  // Check if file exists by trying a HEAD request
+  
   useEffect(() => {
     fetch(modelPath, { method: 'HEAD' })
       .then(res => { if (!res.ok) setHasModel(false) })
@@ -130,7 +125,7 @@ function GLBWithFallback({ item, hovered }) {
   )
 }
 
-// ── Main exported component ────────────────────────────────────
+//Main exported component 
 export default function FurnitureModel({ item }) {
   const [hovered, setHovered] = useState(false)
 
@@ -148,7 +143,7 @@ export default function FurnitureModel({ item }) {
     >
       <GLBWithFallback item={item} hovered={hovered} />
 
-      {/* Label floats above — use boxH as a rough height estimate */}
+      
       <Text
         position={[0, boxH + 0.2, 0]}
         fontSize={0.13}
