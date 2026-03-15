@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Text } from '@react-three/drei'
+import FurnitureModel from '../../components/FurnitureModel'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import * as THREE from 'three'
 import Navbar from '../../components/layout/Navbar'
@@ -109,7 +110,7 @@ export default function UserView3D() {
             <pointLight position={[room.widthM*0.2,2.2,room.heightM*0.8]} intensity={15} distance={8} color="#fff8f0" />
             <Suspense fallback={null}>
               <Room3D room={room} />
-              {furniture.map(item => <FurnitureBox key={item.id} item={item} />)}
+              {furniture.map(item => <FurnitureModel key={item.id} item={item} />)}
             </Suspense>
             <OrbitControls
               target={[room.widthM/2, 0.8, room.heightM/2]}
