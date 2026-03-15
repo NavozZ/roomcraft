@@ -6,9 +6,10 @@ export default function ProtectedRoute({ children, role }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-wood-50 gap-4">
-        <div className="w-8 h-8 border-2 border-wood-200 border-t-wood-500 rounded-full animate-spin" />
-        <p className="font-display text-lg text-wood-400">Loading RoomCraft...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0e0a06', gap: 16 }}>
+        <div style={{ width: 32, height: 32, border: '2px solid rgba(166,124,82,0.2)', borderTop: '2px solid #A67C52', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <p style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.1rem', color: '#555' }}>Loading RoomCraft...</p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
     )
   }

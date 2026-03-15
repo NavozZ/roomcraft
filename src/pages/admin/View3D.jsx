@@ -206,10 +206,10 @@ export default function View3D() {
   const { room, furniture } = currentDesign
 
   return (
-    <div className="min-h-screen bg-wood-900 flex flex-col">
+    <div className="h-screen bg-wood-900 flex flex-col">
       <Navbar />
 
-      <div className="pt-16 flex flex-col flex-1">
+      <div className="pt-16 flex flex-col flex-1 overflow-hidden">
 
         
         <div className="h-12 bg-wood-800 border-b border-wood-700 flex items-center px-4 gap-4 flex-shrink-0">
@@ -249,11 +249,11 @@ export default function View3D() {
         </div>
 
         
-        <div className="flex-1">
+        <div className="flex-1" style={{ position: 'relative', width: '100%', minHeight: 0 }}>
           <Canvas
             shadows={shadows}
             gl={{ antialias: true }}
-            style={{ background: '#1C1006' }}
+            style={{ position: 'absolute', inset: 0, background: '#1C1006' }}
           >
             <SceneCamera room={room} />
             <Lighting room={room} />

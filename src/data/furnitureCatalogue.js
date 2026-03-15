@@ -1,6 +1,3 @@
-// furnitureCatalogue.js — Sadaru
-// Master list of all furniture items available in the palette
-
 export const FURNITURE_CATALOGUE = [
   { type: 'sofa',          label: 'Sofa',          icon: '🛋️', widthM: 2.2, depthM: 0.9, colour: '#C8A882', modelFile: 'sofa.glb' },
   { type: 'dining-table',  label: 'Dining Table',  icon: '🪑', widthM: 1.8, depthM: 0.9, colour: '#A67C52', modelFile: 'dining-table.glb' },

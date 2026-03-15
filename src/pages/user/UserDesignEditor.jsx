@@ -6,6 +6,8 @@ import { designService } from '../../services/designService'
 import { FURNITURE_CATALOGUE } from '../../data/furnitureCatalogue'
 import ColourPanel from '../../components/colour/ColourPanel'
 
+// Author: Sadaru (user version)
+// ColourPanel component: Ravindu
 
 const PIXELS_PER_METRE = 60
 
@@ -22,20 +24,27 @@ export default function DesignEditor() {
   const [dragging, setDragging]     = useState(null)
   const [saveStatus, setSaveStatus] = useState('')
   const [zoom, setZoom]             = useState(1)
-  const [rightTab, setRightTab]     = useState('colour') 
+  const [rightTab, setRightTab]           = useState('colour')
+  const [showDeleteRoom, setShowDeleteRoom] = useState(false)
 
   useEffect(() => {
     if (!currentDesign || currentDesign.id !== id) {
       const saved = designService.getById(id)
       if (saved) loadDesign(saved)
-      else navigate('/admin')
+      else navigate('/user')
     }
   }, [id])
 
+  const handleDeleteRoom = () => {
+    designService.delete(id)
+    navigate('/user')
+  }
+
   if (!currentDesign) {
     return (
-      <div className="min-h-screen bg-wood-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-wood-200 border-t-wood-500 rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0e0a06' }}>
+        <div style={{ width: 32, height: 32, border: '2px solid rgba(166,124,82,0.2)', borderTop: '2px solid #A67C52', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
     )
   }
@@ -108,12 +117,13 @@ export default function DesignEditor() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-wood-900 flex flex-col">
       <Navbar />
 
       <div className="pt-16 flex flex-1 overflow-hidden">
 
-        
+        {/* ── Left: Furniture Palette (Sadaru) ── */}
         <aside className="w-48 bg-wood-800 border-r border-wood-700 flex flex-col overflow-y-auto flex-shrink-0">
           <div className="px-3 py-3 border-b border-wood-700">
             <p className="text-xs text-wood-400 uppercase tracking-widest font-medium">Furniture</p>
@@ -136,10 +146,10 @@ export default function DesignEditor() {
           </div>
         </aside>
 
-        
+        {/* ── Centre: Canvas (Sadaru) ── */}
         <main className="flex-1 flex flex-col overflow-hidden">
 
-          
+          {/* Toolbar */}
           <div className="h-12 bg-wood-800 border-b border-wood-700 flex items-center px-4 gap-3 flex-shrink-0">
             <span className="text-sm font-medium text-wood-200 font-display">{room.name}</span>
             <span className="text-wood-600">·</span>
@@ -159,12 +169,18 @@ export default function DesignEditor() {
             <button onClick={handleSave} className="btn btn-primary btn-sm">
               {saveStatus === 'saving' ? '...' : saveStatus === 'saved' ? '✓ Saved' : '💾 Save'}
             </button>
-            <Link to={`/admin/view3d/${id}`} className="btn btn-secondary btn-sm">
+            <Link to={`/user/view3d/${id}`} className="btn btn-secondary btn-sm">
               🏠 View 3D
             </Link>
+            <button onClick={() => setShowDeleteRoom(true)}
+              style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'5px 10px', borderRadius:8, background:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.25)', color:'#f87171', fontSize:'0.72rem', cursor:'pointer', transition:'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.background='rgba(239,68,68,0.25)'; e.currentTarget.style.color='#FFF' }}
+              onMouseLeave={e => { e.currentTarget.style.background='rgba(239,68,68,0.12)'; e.currentTarget.style.color='#f87171' }}>
+              🗑️ Delete Room
+            </button>
           </div>
 
-          
+          {/* Canvas */}
           <div className="flex-1 overflow-auto bg-wood-900 flex items-center justify-center p-8">
             <div style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.15s' }}>
               <div
@@ -253,10 +269,10 @@ export default function DesignEditor() {
           </div>
         </main>
 
-        
+        {/* ── Right: Properties + ColourPanel (Ravindu) ── */}
         <aside className="w-56 bg-wood-800 border-l border-wood-700 flex flex-col flex-shrink-0">
 
-          
+          {/* Tab switcher */}
           <div className="flex border-b border-wood-700">
             {[['colour','🎨 Colour'],['position','📐 Position']].map(([tab, label]) => (
               <button key={tab} onClick={() => setRightTab(tab)}
@@ -269,7 +285,7 @@ export default function DesignEditor() {
             ))}
           </div>
 
-          
+          {/* Colour tab — Ravindu's ColourPanel */}
           {rightTab === 'colour' && (
             <ColourPanel
               selectedItem={selectedItem}
@@ -279,7 +295,7 @@ export default function DesignEditor() {
             />
           )}
 
-          
+          {/* Position tab — Sadaru */}
           {rightTab === 'position' && (
             <div className="flex flex-col gap-0 flex-1 overflow-y-auto">
               <div className="px-4 py-3 border-b border-wood-700">
@@ -334,5 +350,33 @@ export default function DesignEditor() {
         </aside>
       </div>
     </div>
+
+      {/* Delete room confirmation modal */}
+      {showDeleteRoom && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.75)', backdropFilter:'blur(6px)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem' }}>
+          <div style={{ background:'rgba(20,14,8,0.97)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:20, padding:'2rem', maxWidth:380, width:'100%', boxShadow:'0 0 60px rgba(0,0,0,0.6)' }}>
+            <div style={{ fontSize:'2rem', marginBottom:'0.75rem' }}>🗑️</div>
+            <h3 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'1.4rem', fontWeight:600, color:'#FAF7F2', marginBottom:'0.5rem' }}>Delete this room?</h3>
+            <p style={{ fontSize:'0.875rem', color:'#888', marginBottom:'1.5rem', lineHeight:1.6 }}>
+              "<span style={{ color:'#C8A882' }}>{room.name}</span>" and all its furniture will be permanently deleted.
+            </p>
+            <div style={{ display:'flex', gap:10 }}>
+              <button onClick={() => setShowDeleteRoom(false)}
+                style={{ flex:1, padding:'10px', borderRadius:10, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', color:'#AAA', cursor:'pointer', fontSize:'0.875rem', transition:'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.background='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#FAF7F2' }}
+                onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.color='#AAA' }}>
+                Cancel
+              </button>
+              <button onClick={handleDeleteRoom}
+                style={{ flex:1, padding:'10px', borderRadius:10, background:'rgba(239,68,68,0.2)', border:'1px solid rgba(239,68,68,0.3)', color:'#f87171', cursor:'pointer', fontSize:'0.875rem', fontWeight:600, transition:'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.background='rgba(239,68,68,0.35)'; e.currentTarget.style.color='#FFF' }}
+                onMouseLeave={e => { e.currentTarget.style.background='rgba(239,68,68,0.2)'; e.currentTarget.style.color='#f87171' }}>
+                Delete Room
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

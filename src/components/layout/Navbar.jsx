@@ -1,87 +1,118 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { useState, useEffect } from 'react'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const handleLogout = () => { logout(); navigate('/') }
   const isActive = (path) =>
     location.pathname === path || location.pathname.startsWith(path + '/')
 
+  const isLanding = location.pathname === '/'
+
+  const navStyle = {
+    position: 'fixed', top: 0, left: 0, right: 0, height: 64,
+    zIndex: 50, transition: 'all 0.3s',
+    background: scrolled || !isLanding
+      ? 'rgba(14,10,6,0.85)'
+      : 'transparent',
+    backdropFilter: scrolled || !isLanding ? 'blur(16px)' : 'none',
+    borderBottom: scrolled || !isLanding ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
+    boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none',
+  }
+
+  const linkBase = {
+    padding: '6px 14px', borderRadius: 8, fontSize: '0.875rem',
+    fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s',
+  }
+  const linkActive = { ...linkBase, color: '#C8A882', background: 'rgba(166,124,82,0.12)' }
+  const linkIdle   = { ...linkBase, color: '#888', }
+
   return (
-    <nav className="fixed top-0 left-0 right-0 h-16 bg-wood-50/90 backdrop-blur-md border-b border-wood-200 z-50 shadow-wood-sm">
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between gap-8">
+    <nav style={navStyle}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 32 }}>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 no-underline flex-shrink-0">
-          <span className="text-2xl">🪑</span>
-          <span className="font-display text-2xl font-semibold text-wood-700 tracking-tight">
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
+          <span style={{ fontSize: '1.4rem' }}>🪑</span>
+          <span style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.5rem', fontWeight: 600, color: '#FAF7F2', letterSpacing: '-0.01em' }}>
             RoomCraft
           </span>
         </Link>
 
         {/* Nav links */}
-        <div className="flex items-center gap-1 flex-1">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1 }}>
           {!user && (
-            <Link to="/"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all no-underline
-                ${isActive('/') && location.pathname === '/'
-                  ? 'text-wood-700 bg-wood-100'
-                  : 'text-wood-500 hover:text-wood-700 hover:bg-wood-100'}`}>
+            <Link to="/" style={isActive('/') && location.pathname === '/' ? linkActive : linkIdle}
+              onMouseEnter={e => { if (!isActive('/') || location.pathname !== '/') e.currentTarget.style.color = '#FAF7F2' }}
+              onMouseLeave={e => { if (!isActive('/') || location.pathname !== '/') e.currentTarget.style.color = '#888' }}>
               Home
             </Link>
           )}
-
           {user?.role === 'admin' && (<>
-            <Link to="/admin"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all no-underline
-                ${isActive('/admin') ? 'text-wood-700 bg-wood-100' : 'text-wood-500 hover:text-wood-700 hover:bg-wood-100'}`}>
+            <Link to="/admin" style={isActive('/admin') ? linkActive : linkIdle}
+              onMouseEnter={e => { if (!isActive('/admin')) e.currentTarget.style.color = '#FAF7F2' }}
+              onMouseLeave={e => { if (!isActive('/admin')) e.currentTarget.style.color = '#888' }}>
               My Designs
             </Link>
-            <Link to="/admin/room-setup"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all no-underline
-                ${isActive('/admin/room-setup') ? 'text-wood-700 bg-wood-100' : 'text-wood-500 hover:text-wood-700 hover:bg-wood-100'}`}>
+            <Link to="/admin/room-setup" style={isActive('/admin/room-setup') ? linkActive : linkIdle}
+              onMouseEnter={e => { if (!isActive('/admin/room-setup')) e.currentTarget.style.color = '#FAF7F2' }}
+              onMouseLeave={e => { if (!isActive('/admin/room-setup')) e.currentTarget.style.color = '#888' }}>
               + New Design
             </Link>
           </>)}
-
           {user?.role === 'user' && (<>
-            <Link to="/user"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all no-underline
-                ${isActive('/user') ? 'text-wood-700 bg-wood-100' : 'text-wood-500 hover:text-wood-700 hover:bg-wood-100'}`}>
+            <Link to="/user" style={isActive('/user') && location.pathname === '/user' ? linkActive : linkIdle}
+              onMouseEnter={e => { if (location.pathname !== '/user') e.currentTarget.style.color = '#FAF7F2' }}
+              onMouseLeave={e => { if (location.pathname !== '/user') e.currentTarget.style.color = '#888' }}>
               Browse
             </Link>
-            <Link to="/user/room-setup"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all no-underline
-                ${isActive('/user/room-setup') ? 'text-wood-700 bg-wood-100' : 'text-wood-500 hover:text-wood-700 hover:bg-wood-100'}`}>
+            <Link to="/user/room-setup" style={isActive('/user/room-setup') ? linkActive : linkIdle}
+              onMouseEnter={e => { if (!isActive('/user/room-setup')) e.currentTarget.style.color = '#FAF7F2' }}
+              onMouseLeave={e => { if (!isActive('/user/room-setup')) e.currentTarget.style.color = '#888' }}>
               My Room
             </Link>
           </>)}
         </div>
 
-        {/* Auth area */}
+        {/* Auth */}
         {user ? (
-          <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Avatar */}
-            <div className="w-8 h-8 rounded-full bg-wood-500 text-white flex items-center justify-center text-sm font-semibold">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg,#A67C52,#7A5230)', color: '#FAF7F2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: 700, boxShadow: '0 0 12px rgba(166,124,82,0.4)' }}>
               {user.name?.charAt(0).toUpperCase()}
             </div>
-            <div className="hidden sm:flex flex-col">
-              <span className="text-sm font-medium text-wood-800 leading-tight">{user.name}</span>
-              <span className="text-xs text-wood-400 leading-tight">
-                {user.role === 'admin' ? '🎨 Designer' : '🏠 Customer'}
-              </span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#FAF7F2', lineHeight: 1.2 }}>{user.name}</span>
+              <span style={{ fontSize: '0.68rem', color: '#666', lineHeight: 1.2 }}>{user.role === 'admin' ? '🎨 Designer' : '🏠 Customer'}</span>
             </div>
-            <button onClick={handleLogout} className="btn btn-secondary btn-sm">
+            <button onClick={handleLogout} style={{ padding: '6px 14px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#888', fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.background='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#FAF7F2' }}
+              onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.color='#888' }}>
               Logout
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <Link to="/login"    className="btn btn-ghost btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-primary btn-sm">Get Started</Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <Link to="/login" style={{ padding: '7px 16px', borderRadius: 8, background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#AAA', fontSize: '0.85rem', textDecoration: 'none', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.background='rgba(255,255,255,0.06)'; e.currentTarget.style.color='#FAF7F2' }}
+              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='#AAA' }}>
+              Login
+            </Link>
+            <Link to="/register" style={{ padding: '7px 16px', borderRadius: 8, background: 'linear-gradient(135deg,#A67C52,#7A5230)', color: '#FAF7F2', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', boxShadow: '0 0 16px rgba(166,124,82,0.3)', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow='0 0 28px rgba(166,124,82,0.5)'; e.currentTarget.style.transform='translateY(-1px)' }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow='0 0 16px rgba(166,124,82,0.3)'; e.currentTarget.style.transform='translateY(0)' }}>
+              Get Started
+            </Link>
           </div>
         )}
       </div>
