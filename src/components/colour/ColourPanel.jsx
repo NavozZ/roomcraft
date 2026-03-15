@@ -1,8 +1,3 @@
-// ColourPanel.jsx — Ravindu
-// Colour and shading control panel for the Design Editor
-// Used in the right sidebar when a furniture item is selected
-
-// ── Colour Palettes ──────────────────────────────────────────
 const PALETTES = [
   {
     name: 'Wood Tones',
@@ -43,9 +38,9 @@ const FLOOR_PRESETS = [
   { label: 'Tile',   value: '#D0D8E0' },
 ]
 
-// ── Shading Preview Bar ──────────────────────────────────────
+
 function ShadingPreview({ colour, shading }) {
-  // Show a row of 5 boxes from light to dark to visualise shading
+  
   return (
     <div className="flex gap-1 mt-1">
       {[0, 0.25, 0.5, 0.75, 1].map(s => {
@@ -64,14 +59,14 @@ function ShadingPreview({ colour, shading }) {
   )
 }
 
-// ── Main ColourPanel ─────────────────────────────────────────
+
 export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onUpdateRoom }) {
   const hasItem = !!selectedItem
 
   return (
     <div className="flex flex-col gap-0 overflow-y-auto flex-1">
 
-      {/* ── FURNITURE SECTION ── */}
+      
       <div className="px-4 py-3 border-b border-wood-700">
         <p className="text-xs text-wood-400 uppercase tracking-widest font-medium">
           {hasItem ? `${selectedItem.label} — Colour` : 'Furniture Colour'}
@@ -81,7 +76,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
       {hasItem ? (
         <div className="p-4 flex flex-col gap-5">
 
-          {/* Colour palettes */}
+          
           {PALETTES.map(palette => (
             <div key={palette.name}>
               <p className="text-2xs text-wood-500 uppercase tracking-wider mb-2 font-medium">{palette.name}</p>
@@ -102,7 +97,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
             </div>
           ))}
 
-          {/* Custom colour picker */}
+          
           <div>
             <p className="text-2xs text-wood-500 uppercase tracking-wider mb-2 font-medium">Custom Colour</p>
             <div className="flex items-center gap-2">
@@ -119,7 +114,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
             </div>
           </div>
 
-          {/* Shading slider */}
+          
           <div>
             <div className="flex items-center justify-between mb-2">
               <p className="text-2xs text-wood-500 uppercase tracking-wider font-medium">Shading / Shadow</p>
@@ -141,7 +136,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
             </div>
           </div>
 
-          {/* Opacity */}
+          
           <div>
             <div className="flex items-center justify-between mb-1">
               <p className="text-2xs text-wood-500 uppercase tracking-wider font-medium">Opacity</p>
@@ -166,7 +161,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
         </div>
       )}
 
-      {/* ── ROOM SECTION ── */}
+      
       <div className="border-t border-wood-700">
         <div className="px-4 py-3 border-b border-wood-700">
           <p className="text-xs text-wood-400 uppercase tracking-widest font-medium">Room Colours</p>
@@ -174,7 +169,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
 
         <div className="p-4 flex flex-col gap-4">
 
-          {/* Wall colour */}
+          
           <div>
             <p className="text-2xs text-wood-500 uppercase tracking-wider mb-2 font-medium">Wall Colour</p>
             <div className="grid grid-cols-4 gap-1.5 mb-2">
@@ -199,7 +194,7 @@ export default function ColourPanel({ selectedItem, onUpdateFurniture, room, onU
             />
           </div>
 
-          {/* Floor colour */}
+          
           <div>
             <p className="text-2xs text-wood-500 uppercase tracking-wider mb-2 font-medium">Floor Type</p>
             <div className="grid grid-cols-5 gap-1.5">

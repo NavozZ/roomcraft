@@ -6,8 +6,6 @@ import { designService } from '../../services/designService'
 import { FURNITURE_CATALOGUE } from '../../data/furnitureCatalogue'
 import ColourPanel from '../../components/colour/ColourPanel'
 
-// Author: Sadaru
-// ColourPanel component: Ravindu
 
 const PIXELS_PER_METRE = 60
 
@@ -24,7 +22,7 @@ export default function DesignEditor() {
   const [dragging, setDragging]     = useState(null)
   const [saveStatus, setSaveStatus] = useState('')
   const [zoom, setZoom]             = useState(1)
-  const [rightTab, setRightTab]     = useState('colour') // 'colour' | 'position'
+  const [rightTab, setRightTab]     = useState('colour') 
 
   useEffect(() => {
     if (!currentDesign || currentDesign.id !== id) {
@@ -115,7 +113,7 @@ export default function DesignEditor() {
 
       <div className="pt-16 flex flex-1 overflow-hidden">
 
-        {/* ── Left: Furniture Palette (Sadaru) ── */}
+        
         <aside className="w-48 bg-wood-800 border-r border-wood-700 flex flex-col overflow-y-auto flex-shrink-0">
           <div className="px-3 py-3 border-b border-wood-700">
             <p className="text-xs text-wood-400 uppercase tracking-widest font-medium">Furniture</p>
@@ -138,10 +136,10 @@ export default function DesignEditor() {
           </div>
         </aside>
 
-        {/* ── Centre: Canvas (Sadaru) ── */}
+        
         <main className="flex-1 flex flex-col overflow-hidden">
 
-          {/* Toolbar */}
+          
           <div className="h-12 bg-wood-800 border-b border-wood-700 flex items-center px-4 gap-3 flex-shrink-0">
             <span className="text-sm font-medium text-wood-200 font-display">{room.name}</span>
             <span className="text-wood-600">·</span>
@@ -166,7 +164,7 @@ export default function DesignEditor() {
             </Link>
           </div>
 
-          {/* Canvas */}
+          
           <div className="flex-1 overflow-auto bg-wood-900 flex items-center justify-center p-8">
             <div style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.15s' }}>
               <div
@@ -255,10 +253,10 @@ export default function DesignEditor() {
           </div>
         </main>
 
-        {/* ── Right: Properties + ColourPanel (Ravindu) ── */}
+        
         <aside className="w-56 bg-wood-800 border-l border-wood-700 flex flex-col flex-shrink-0">
 
-          {/* Tab switcher */}
+          
           <div className="flex border-b border-wood-700">
             {[['colour','🎨 Colour'],['position','📐 Position']].map(([tab, label]) => (
               <button key={tab} onClick={() => setRightTab(tab)}
@@ -271,7 +269,7 @@ export default function DesignEditor() {
             ))}
           </div>
 
-          {/* Colour tab — Ravindu's ColourPanel */}
+          
           {rightTab === 'colour' && (
             <ColourPanel
               selectedItem={selectedItem}
@@ -281,7 +279,7 @@ export default function DesignEditor() {
             />
           )}
 
-          {/* Position tab — Sadaru */}
+          
           {rightTab === 'position' && (
             <div className="flex flex-col gap-0 flex-1 overflow-y-auto">
               <div className="px-4 py-3 border-b border-wood-700">

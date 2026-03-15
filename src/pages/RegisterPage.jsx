@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
-// Author: Asantha
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -219,7 +218,7 @@ export default function RegisterPage() {
                   </button>
                 </div>
                 {errors.confirm && <p className="text-xs text-red-500">{errors.confirm}</p>}
-                {/* Password match indicator */}
+                
                 {form.confirm && !errors.confirm && form.password === form.confirm && (
                   <p className="text-xs text-green-600">✅ Passwords match</p>
                 )}
