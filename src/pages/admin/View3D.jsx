@@ -1,6 +1,7 @@
 import { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Environment, Text } from '@react-three/drei'
+import FurnitureModel from '../../components/FurnitureModel'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import * as THREE from 'three'
 import Navbar from '../../components/layout/Navbar'
@@ -261,7 +262,7 @@ export default function View3D() {
             <Suspense fallback={null}>
               <Room3D room={room} />
               {furniture.map(item => (
-                <FurnitureBox key={item.id} item={item} wireframe={wireframe} />
+                <FurnitureModel key={item.id} item={item} />
               ))}
             </Suspense>
 

@@ -14,6 +14,7 @@ import DesignDetail   from './pages/admin/DesignDetail'
 import UserDashboard  from './pages/user/UserDashboard'
 import UserRoomSetup  from './pages/user/UserRoomSetup'
 import UserView3D     from './pages/user/UserView3D'
+import UserDesignEditor from './pages/user/UserDesignEditor'
 
 export default function App() {
   return (
@@ -46,6 +47,9 @@ export default function App() {
             } />
             <Route path="/user/room-setup" element={
               <ProtectedRoute role="user"><UserRoomSetup /></ProtectedRoute>
+            } />
+            <Route path="/user/editor/:id" element={
+              <ProtectedRoute role="user"><UserDesignEditor /></ProtectedRoute>
             } />
             <Route path="/user/view3d/:id" element={
               <ProtectedRoute role="user"><UserView3D /></ProtectedRoute>
