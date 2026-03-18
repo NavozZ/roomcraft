@@ -8,7 +8,7 @@
 ## 🔗 Links
 
 - **GitHub Repository:** [https://github.com/NavozZ/roomcraft](https://github.com/NavozZ/roomcraft)
-- **Video Presentation:** `[OneDrive link — add before submission]`
+- **Video Presentation:** `-`
 - **Live Demo:** Run locally (see setup below)
 
 ---
